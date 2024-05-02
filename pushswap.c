@@ -24,38 +24,53 @@ typedef struct
     struct node *head;
 } stack;
 
-// Do push and pop
+
 // push = add element at the begining of stack
-void    push(int data, stack *A)
-{
-    node *new = malloc(sizeof(node));
-  
-    new->data = data;
-    new->next = A->head;
-    A->head = new;
-}
-
+void    push(int data, stack *A);
 // pop = remove element from stack
+void    pop(stack *A);
+void printlist(stack *A);
 
-void    pop(stack *A)
+// sa (swap a): Swap the first 2 elements at the top of stack a.
+// Do nothing if there is only one or no elements.
+// sb (swap b): Swap the first 2 elements at the top of stack b.
+// Do nothing if there is only one or no elements.
+void swap(stack *AB)
 {
-    node *temp = A->head;
-
-    A->head = A->head->next;
-    free(temp);
+    node *temp = AB->head->next; //temp points to node 2
+    
+    AB->head->next = temp->next; // A->head->next points to node 3
+    temp->next = AB->head; // temp->next points to node 1
+    AB->head = temp; // A->head points to null 2
 }
 
-void printlist(stack *A)
+void ss(stack *A, stack *B)
 {
-    printf("----------\n");
-    node *runner = A->head;
-    while(runner)
-    {
-        printf("%d\n", runner->data);   
-        runner = runner->next;
-    }
-    printf("----------\n");
+    node *temp = A->head->next; //temp points to node 2
+    
+    A->head->next = temp->next; // A->head->next points to node 3
+    temp->next = A->head; // temp->next points to node 1
+    A->head = temp; // A->head points to null 2
+
+    node *temp2 = B->head->next; //temp points to node 2
+    
+    B->head->next = temp2->next; // A->head->next points to node 3
+    temp2->next = B->head; // temp->next points to node 1
+    B->head = temp2; // A->head points to null 2
 }
+
+void    pusha(stack *A, stack *B)
+{
+    push(B->head->data, A);
+    pop(B);
+}
+
+void    pushb(stack *A, stack *B)
+{
+    push(A->head->data, B);
+    pop(A);
+}
+
 
 int main()
 {
@@ -65,30 +80,50 @@ int main()
     stack *B = malloc(sizeof(stack));
     B->head = NULL;
 
+    push(1, A); push(2, A); push(3, A); push(4, A); push(5, A);
+    push(9, B); push(8, B); push(7, B); push(6, B); push(5, B);
+    
 
-    swap()
+    // swap(A);
+    // swap(B);
 
-    push(1, A);
-    push(2, A);
-    push(3, A);
-    push(4, A);
-    push(5, A);
+    // pop(A);
 
-    pop(A);
+    // pusha(A, B);
+    // pushb(A, B);
+    // ss(A, B);
+  
     printlist(A);
-    pop(A);
-    printlist(A);
-    pop(A);
-    printlist(A);
-    pop(A);
-    printlist(A);
+    printlist(B);
+}
+void printlist(stack *AB)
+{
+    printf("----------\n");
+    node *runner = AB->head;
+    while(runner)
+    {
+        printf("%d\n", runner->data);  
+        runner = runner->next;
+    }
+    printf("----------\n");
 }
 
-// sa (swap a): Swap the first 2 elements at the top of stack a.
-// Do nothing if there is only one or no elements.
+void    pop(stack *AB)
+{
+    node *temp = AB->head;
 
-// sb (swap b): Swap the first 2 elements at the top of stack b.
-// Do nothing if there is only one or no elements.
+    AB->head = AB->head->next;
+    free(temp);
+}
+
+void    push(int data, stack *A)
+{
+    node *new = malloc(sizeof(node));
+  
+    new->data = data;
+    new->next = A->head;
+    A->head = new;
+}
 
 // ss : sa and sb at the same time.
 
