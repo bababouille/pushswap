@@ -1,7 +1,0 @@
-Quick Sort / recursion
-
-
-
-quick sort pseudo code//
-// Make structure with the two nodes allowed (A and B)
-// Recognise input numbers data (1 string(split) or several strings)
