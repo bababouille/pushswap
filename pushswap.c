@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "pushswap.h"
 
 typedef struct node
 {
@@ -27,17 +25,6 @@ typedef struct
     char name[128];
 } stack;
 
-void    push(int data, stack *A);
-void    pop(stack *A);
-void    printlist(stack *A);
-void    swap(stack *S);
-void    ss(stack *A, stack *B);
-void    pusha(stack *A, stack *B);
-void    pushb(stack *A, stack *B);
-void    rotata(stack *A);
-void    reverserotate(stack *);
-void    reverseboth(stack *A, stack B);
-
 int main()
 {
     stack *A = malloc(sizeof(stack));
@@ -49,136 +36,39 @@ int main()
     B->head = NULL;
     B->tail = NULL;
     strcpy(B->name, "b");
-}
 
-void printlist(stack *AB)
-{
-    printf("----------\n");
-    node *runner = AB->head;
-    while(runner)
-    {
-        printf("%d\n", runner->data);  
-        runner = runner->next;
-    }
-    printf("----------\n");
-}
-
-void    pop(stack *S)
-{
-    node *temp = S->head;
-
-    S->head = S->head->next;
-    free(temp);
-}
-
-void    push(int data, stack *S)
-{
-    node *new = malloc(sizeof(node));
-  
-    new->data = data;
-    new->next = S->head;
-    S->head = new;
-    if(new->next == NULL)
-    {
-        S->tail = new;
-    }
-}
-
-void    pusha(stack *A, stack *B)
-{
-    push(B->head->data, A);
-    pop(B);
-}
-
-void    pushb(stack *A, stack *B)
-{
-    push(A->head->data, B);
-    pop(A);
-}
-
-void ss(stack *A, stack *B)
-{
-    node *temp = A->head->next; //temp points to node 2
+    push(1, A); push(2, A); push(3, A); push(4, A); push(5, A);
+    push(9, B); push(9, B); push(9, B); push(9, B); push(9, B);
     
-    A->head->next = temp->next; // A->head->next points to node 3
-    temp->next = A->head; // temp->next points to node 1
-    A->head = temp; // A->head points to null 2
+    printf("After push\n");
+    printlist(A);
 
-    node *temp2 = B->head->next; //temp points to node 2
+    swap(A);
+    swap(B);
+
+    printf("After swap\n");
+    printlist(A);
+   
     
-    B->head->next = temp2->next; // A->head->next points to node 3
-    temp2->next = B->head; // temp->next points to node 1
-    B->head = temp2; // A->head points to null 2
-}
-
-void swap(stack *S)
-{
-    node *temp = S->head->next; // temp points to node 2
-
-    S->head->next = temp->next; // A->head->next points to node 3
-    temp->next = S->head; // temp->next points to node 1
-    S->head = temp; // A->head points to null 2
-
-    printf("s%s\n", S->name);
-}
-
-void rotata(stack *S)
-{
-    node *temp = S->head;
+    ss(A, B);
     
-    while (temp->next != NULL)
-    {
-        temp = temp->next;
-    }
-    temp->next = S->head;
-    temp = temp->next;
-    S->head = S->head->next; 
-    temp->next = NULL;
+    printf("After SS\n");
+    printlist(A);
+
+    // pop(A);
+
+    pusha(A, B);
+    // pushb(A, B);
+
+    printf("After pusha\n");
+    printlist(A);
+    
+    rotata(A);
+    printf("After rotate\n");
+    printlist(A);
+
+    reverserotate(A);
+    printf("After rev rotate\n");
+    printlist(A);
 }
-
-
-// rra (reverse rotate a): Shift down all elements of stack a by 1.
-// The last element becomes the first one.
-
-// rrb (reverse rotate b): Shift down all elements of stack b by 1.
-// The last element becomes the first one.
-void reverserotate(stack *S)
-{
-    node *temp = S->head; // temp = 1st node 
-
-    while (temp->next->next != NULL)
-    { 
-        temp = temp->next;
-    }
-    temp->next->next = S->head; // NULL is now = to 1st node
-    S->head = temp->next; // 1st node equal to second to last node
-    temp->next = NULL; // second to last node points to NULL
-}
-
-void reverseboth(stack *A, stack B)
-{
-    node *temp = A->head; // temp = 1st node 
-
-    while (temp->next->next != NULL)
-    { 
-        temp = temp->next;
-    }
-    temp->next->next = A->head; // NULL is now = to 1st node
-    A->head = temp->next; // 1st node equal to second to last node
-    temp->next = NULL; // second to last node points to NULL
-
-    node *temp = B->head; // temp = 1st node 
-
-    while (temp->next->next != NULL)
-    { 
-        temp = temp->next;
-    }
-    temp->next->next = B->head; // NULL is now = to 1st node
-    B->head = temp->next; // 1st node equal to second to last node
-    temp->next = NULL; // second to last node points to NULL
-}
-
-
-// rrr : rra and rrb at the same time.
-
 
