@@ -15,7 +15,7 @@
 void printlist(stack *S)
 {
     printf("----------\n");
-    node *runner = AB->head;
+    node *runner = S->head;
     while(runner)
     {
         printf("%d\n", runner->data);  
@@ -43,40 +43,65 @@ void    push(int data, stack *S)
 
 void    pusha(stack *A, stack *B)
 {
-    push(B->head->data, A);
-    pop(B);
+    if(B->head)
+    {
+        push(B->head->data, A);
+        pop(B);
+        printf("pa\n");
+    }
 }
 
 void    pushb(stack *A, stack *B)
 {
-    push(A->head->data, B);
-    pop(A);
+    if(A->head)
+    {
+        push(A->head->data, B);
+        pop(A);
+        printf("pb\n");
+    }
 }
 
 void ss(stack *A, stack *B)
 {
-    node *temp = A->head->next; //temp points to node 2
-    
-    A->head->next = temp->next; // A->head->next points to node 3
-    temp->next = A->head; // temp->next points to node 1
-    A->head = temp; // A->head points to null 2
-
-    node *temp2 = B->head->next; //temp points to node 2
-    
-    B->head->next = temp2->next; // A->head->next points to node 3
-    temp2->next = B->head; // temp->next points to node 1
-    B->head = temp2; // A->head points to null 2
+    if(A->head || A->head-next)
+    {
+        node *temp = A->head->next; //temp points to node 2
+        
+        A->head->next = temp->next; // A->head->next points to node 3
+        temp->next = A->head; // temp->next points to node 1
+        A->head = temp; // A->head points to null 2
+    }
+    else if(B->head || B->head-next)
+    {
+        node *temp2 = B->head->next; //temp points to node 2
+        
+        B->head->next = temp2->next; // A->head->next points to node 3
+        temp2->next = B->head; // temp->next points to node 1
+        B->head = temp2; // A->head points to null 2
+        printf("ss\n");
+    }
+    else 
+    {
+        return 0;
+    }
 }
 
 void swap(stack *S)
 {
-    node *temp = S->head->next; // temp points to node 2
+    if(S->head || S->head-next)
+    {
+        node *temp = S->head->next; // temp points to node 2
 
-    S->head->next = temp->next; // A->head->next points to node 3
-    temp->next = S->head; // temp->next points to node 1
-    S->head = temp; // A->head points to null 2
+        S->head->next = temp->next; // A->head->next points to node 3
+        temp->next = S->head; // temp->next points to node 1
+        S->head = temp; // A->head points to null 2
 
-    printf("s%s\n", S->name);
+        printf("s%s\n", S->name);
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 void rotata(stack *S)
@@ -91,6 +116,7 @@ void rotata(stack *S)
     temp = temp->next;
     S->head = S->head->next; 
     temp->next = NULL;
+    printf("r%s\n", S->name);
 }
 
 void reverserotate(stack *S)
@@ -104,9 +130,10 @@ void reverserotate(stack *S)
     temp->next->next = S->head; // NULL is now = to 1st node
     S->head = temp->next; // 1st node equal to second to last node
     temp->next = NULL; // second to last node points to NULL
+    printf("rr%s\n", S->name);
 }
 
-void reverseboth(stack *A, stack B)
+void reverseboth(stack *A, stack *B)
 {
     node *temp = A->head; // temp = 1st node 
 
@@ -118,13 +145,14 @@ void reverseboth(stack *A, stack B)
     A->head = temp->next; // 1st node equal to second to last node
     temp->next = NULL; // second to last node points to NULL
 
-    node *temp = B->head; // temp = 1st node 
+    node *temp2 = B->head; // temp = 1st node 
 
-    while (temp->next->next != NULL)
+    while (temp2->next->next != NULL)
     { 
-        temp = temp->next;
+        temp2 = temp2->next;
     }
-    temp->next->next = B->head; // NULL is now = to 1st node
-    B->head = temp->next; // 1st node equal to second to last node
-    temp->next = NULL; // second to last node points to NULL
+    temp2->next->next = B->head; // NULL is now = to 1st node
+    B->head = temp2->next; // 1st node equal to second to last node
+    temp2->next = NULL; // second to last node points to NULL
+    printf("rrr\n");
 }
