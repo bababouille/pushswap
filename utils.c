@@ -39,6 +39,10 @@ void    push(int data, stack *S)
     new->data = data;
     new->next = S->head;
     S->head = new;
+    if(new->next == NULL)
+    {
+        S->tail = new;
+    }
 }
 
 void    pusha(stack *A, stack *B)
@@ -63,7 +67,7 @@ void    pushb(stack *A, stack *B)
 
 void ss(stack *A, stack *B)
 {
-    if(A->head || A->head-next)
+    if(A->head == NULL || A->head->next == NULL)
     {
         node *temp = A->head->next; //temp points to node 2
         
@@ -71,7 +75,7 @@ void ss(stack *A, stack *B)
         temp->next = A->head; // temp->next points to node 1
         A->head = temp; // A->head points to null 2
     }
-    else if(B->head || B->head-next)
+    else if(B->head || B->head->next)
     {
         node *temp2 = B->head->next; //temp points to node 2
         
@@ -80,15 +84,11 @@ void ss(stack *A, stack *B)
         B->head = temp2; // A->head points to null 2
         printf("ss\n");
     }
-    else 
-    {
-        return 0;
-    }
 }
 
 void swap(stack *S)
 {
-    if(S->head || S->head-next)
+    if(S->head || S->head->next)
     {
         node *temp = S->head->next; // temp points to node 2
 
@@ -97,10 +97,6 @@ void swap(stack *S)
         S->head = temp; // A->head points to null 2
 
         printf("s%s\n", S->name);
-    }
-    else
-    {
-        return 0;
     }
 }
 
