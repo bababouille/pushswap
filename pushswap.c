@@ -31,6 +31,7 @@ void    get_it_done(stack *A, stack *B)
             {
                 break;
             }
+             get_it_done(A, B);
         }
         else if(A->head->data < B->tail->data)
         {
@@ -40,6 +41,7 @@ void    get_it_done(stack *A, stack *B)
             {
                 break;
             }
+             get_it_done(A, B);
         }
         else if(A->head->next->data > B->head->data)
         {
@@ -49,6 +51,7 @@ void    get_it_done(stack *A, stack *B)
             {
                 break;
             }
+             get_it_done(A, B);
         }
         else if(A->head->next->data < B->tail->data)
         {
@@ -59,6 +62,7 @@ void    get_it_done(stack *A, stack *B)
             {
                 break;
             }
+             get_it_done(A, B);
         }
         else if(A->tail->data > B->head->data)
         {
@@ -68,6 +72,7 @@ void    get_it_done(stack *A, stack *B)
             {
                 break;
             }
+             get_it_done(A, B);
         }
         else if(A->tail->data < B->tail->data)
         {
@@ -78,13 +83,12 @@ void    get_it_done(stack *A, stack *B)
             {
                 break;
             }
+            get_it_done(A, B);
         }
-        else
-        {
-            rotate(B);
-            rotatecount++;
-        }
-        printf("%d\n", rotatecount);
+      
+        rotate(B);
+        rotatecount++;
+      
     }
     printf("%s\n","hello biotch");
     if (rotatecount > 0)
