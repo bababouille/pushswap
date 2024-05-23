@@ -12,49 +12,55 @@
 
 #include "pushswap.h"
 
-#include "pushswap.h"
-
 void    get_it_done(stack *A, stack *B)
 {
     int rotatecount = 0;
+    int i = 0;
 
-    while(1)
+    while(A->head != NULL)
     {
-        if (A->head == NULL)
-        {
-            break;
-        }
         if(A->head->data > B->head->data)
         {
+            printf("Condition 1: A->head->data > B->head->data\n");
             pushb(A, B);
             if(rotatecount > 0)
             {
                 break;
             }
-             get_it_done(A, B);
         }
         else if(A->head->data < B->tail->data)
         {
+            printf("Condition 2: A->head->data < B->tail->data\n");
             pushb(A, B);
             rotate(B);
             if(rotatecount > 0)
             {
                 break;
             }
-             get_it_done(A, B);
         }
         else if(A->head->next->data > B->head->data)
         {
+            printf("Condition 3: A->head->next->data > B->head->data\n");
             swap(A);
             pushb(A, B);
             if(rotatecount > 0)
             {
                 break;
             }
-             get_it_done(A, B);
+        } 
+        else if(A->tail->data > B->head->data)
+        {
+            printf("Condition 4: A->tail->data > B->head->data\n");
+            reverserotate(A);
+            pushb(A, B);
+            if(rotatecount > 0)
+            {
+                break;
+            }
         }
         else if(A->head->next->data < B->tail->data)
         {
+            printf("Condition 5: A->head->next->data < B->tail->data\n");\
             swap(A);
             pushb(A, B);
             rotate(B);
@@ -62,20 +68,10 @@ void    get_it_done(stack *A, stack *B)
             {
                 break;
             }
-             get_it_done(A, B);
-        }
-        else if(A->tail->data > B->head->data)
-        {
-            reverserotate(A);
-            pushb(A, B);
-            if(rotatecount > 0)
-            {
-                break;
-            }
-             get_it_done(A, B);
         }
         else if(A->tail->data < B->tail->data)
         {
+            printf("Condition 6: A->tail->data < B->tail->data\n");
             reverserotate(A);
             pushb(A, B);
             rotate(B);
@@ -83,33 +79,23 @@ void    get_it_done(stack *A, stack *B)
             {
                 break;
             }
-            get_it_done(A, B);
         }
-      
-        rotate(B);
-        rotatecount++;
-      
-    }
-    printf("%s\n","hello biotch");
-    if (rotatecount > 0)
-    {
-        int i = 0;
-        while(i <= rotatecount)
+        else
         {
-            reverserotate(B);
-            i++;
-        }
-        rotatecount = 0;
-        i = 0;
-        get_it_done(A, B);
-    } 
-    if (A->head == NULL)
-    {
-        while(B->head)
-        {
-            pusha(A, B);
+            printf("Else case: rotating B\n");
+            rotate(B);
+            rotatecount++;   
         }
     }
+
+    printf("ROTATE COUNT IS :%d\n", rotatecount);
+    while(i < rotatecount)
+    {
+        reverserotate(B);
+        i++;
+    }
+    rotatecount = 0;
+    i = 0;
 }
 
 
@@ -125,17 +111,45 @@ int main()
     B->tail = NULL;
     strcpy(B->name, "b");
 
-    push(14, A); push(82, A); push(35, A); push(98, A); push(54, A); push(59, A); 
+    push(16, A); push(85, A); push(48, A); push(80, A); push(59, A); push(0, A); push(40, A); push(11, A); push(74, A);
     printlist(A);
     printf("TAIL A IS %d\n", A->tail->data);
     pushb(A, B);
     pushb(A, B);
-    if(B->head->data < B->tail->data)
+    if(B->head->data < B->head->next->data)
     {
-        rotate(B);
+        swap(B);
+    }
+    printlist(B);
+
+    while(A->head)
+    {
+      get_it_done(A, B);
+      printf("GET IT DONE! GOT DONE!!\n");  
+    }
+    
+    while(B->head)
+    {
+        pusha(A, B);
+    }   
+    printlist(A);
+    
+    pushb(A, B);
+    pushb(A, B);
+
+    while(A->head)
+    {
+      get_it_done(A, B);
+      printf("GET IT DONE! GOT DONE!!\n");  
     }
 
-    get_it_done(A, B);
+    while(B->head)
+    {
+        pusha(A, B);
+    }
     printlist(A);
+    
+    free(A);
+    free(B);
     
 }

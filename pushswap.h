@@ -37,7 +37,7 @@ void    swap(stack *S);
 void    ss(stack *A, stack *B);
 void    pusha(stack *A, stack *B);
 void    pushb(stack *A, stack *B);
-void    rotata(stack *S);
+void    rotate(stack *S);
 void    reverserotate(stack *S);
 void    reverseboth(stack *A, stack *B);
 

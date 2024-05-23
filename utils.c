@@ -67,21 +67,26 @@ void    pushb(stack *A, stack *B)
 
 void ss(stack *A, stack *B)
 {
-    if(A->head == NULL || A->head->next == NULL)
+    if(A->head && A->head->next)
     {
-        node *temp = A->head->next; //temp points to node 2
+        node *temp = A->head->next; 
         
-        A->head->next = temp->next; // A->head->next points to node 3
-        temp->next = A->head; // temp->next points to node 1
-        A->head = temp; // A->head points to null 2
+        A->head->next = temp->next;
+        if (temp->next == NULL)
+            A->tail = A->head;
+        temp->next = A->head; 
+        A->head = temp; 
+        printf("ss\n");
     }
-    else if(B->head || B->head->next)
+    else if(B->head && B->head->next)
     {
-        node *temp2 = B->head->next; //temp points to node 2
+        node *temp2 = B->head->next; 
         
-        B->head->next = temp2->next; // A->head->next points to node 3
-        temp2->next = B->head; // temp->next points to node 1
-        B->head = temp2; // A->head points to null 2
+        B->head->next = temp2->next;
+        if (temp2->next == NULL)
+            B->tail = B->head;
+        temp2->next = B->head; 
+        B->head = temp2; 
         printf("ss\n");
     }
 }
@@ -93,6 +98,8 @@ void swap(stack *S)
         node *temp = S->head->next; // temp points to node 2
 
         S->head->next = temp->next; // A->head->next points to node 3
+        if (temp->next == NULL)
+            S->tail = S->head;
         temp->next = S->head; // temp->next points to node 1
         S->head = temp; // A->head points to null 2
 
@@ -100,7 +107,7 @@ void swap(stack *S)
     }
 }
 
-void rotata(stack *S)
+void rotate(stack *S)
 {
     node *temp = S->head;
     
@@ -108,10 +115,11 @@ void rotata(stack *S)
     {
         temp = temp->next;
     }
-    temp->next = S->head;
-    temp = temp->next;
-    S->head = S->head->next; 
-    temp->next = NULL;
+    temp->next = S->head; // Make the last node point to the head of the stack, creating a circular linked list
+    temp = temp->next; // Move 'temp' to the new last node, which is the previous head
+    S->head = S->head->next; // Update the head of the stack to point to the second node
+    S->tail = temp;
+    temp->next = NULL; // Break the circular link by setting the next pointer of the last node to NULL
     printf("r%s\n", S->name);
 }
 
