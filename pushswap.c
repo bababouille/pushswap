@@ -12,6 +12,23 @@
 
 #include "pushswap.h"
 
+
+int inbetween(stack *A, stack *B)
+{  
+    printf("INSIDE INBETWEEN\n");
+
+    if((A->head->data < B->head->next->data) && (A->head->data > B->head->data))
+    {
+        printf("Condition IB!: 2\n");
+        pushb(A, B);
+        swap(B);
+        return 1;
+    }
+    return 0;
+
+}
+
+
 void    get_it_done(stack *A, stack *B)
 {
     int rotatecount = 0;
@@ -84,10 +101,15 @@ void    get_it_done(stack *A, stack *B)
         {
             printf("Else case: rotating B\n");
             rotate(B);
-            rotatecount++;   
+            rotatecount++;
+            while(!inbetween(A, B))
+            {
+                rotate(B);
+                rotatecount++;
+            }   
+            break;
         }
     }
-
     printf("ROTATE COUNT IS :%d\n", rotatecount);
     while(i < rotatecount)
     {
@@ -111,7 +133,7 @@ int main()
     B->tail = NULL;
     strcpy(B->name, "b");
 
-    push(16, A); push(85, A); push(48, A); push(80, A); push(59, A); push(0, A); push(40, A); push(11, A); push(74, A);
+    push(16, A); push(85, A); push(48, A); push(0, A); push(40, A); push(11, A); push(74, A);
     printlist(A);
     printf("TAIL A IS %d\n", A->tail->data);
     pushb(A, B);
@@ -126,28 +148,15 @@ int main()
     {
       get_it_done(A, B);
       printf("GET IT DONE! GOT DONE!!\n");  
+      printlist(B);
     }
-    
+    printf("WROOR!!\n");  
     while(B->head)
     {
         pusha(A, B);
     }   
     printlist(A);
-    
-    pushb(A, B);
-    pushb(A, B);
-
-    while(A->head)
-    {
-      get_it_done(A, B);
-      printf("GET IT DONE! GOT DONE!!\n");  
-    }
-
-    while(B->head)
-    {
-        pusha(A, B);
-    }
-    printlist(A);
+    printf("TAIL A IS %d\n", A->tail->data);
     
     free(A);
     free(B);
