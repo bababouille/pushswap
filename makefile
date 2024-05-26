@@ -2,7 +2,7 @@ NAME = pushswap
 SRC = pushswap.c utils.c
 OBJ = $(SRC:.c=.o)
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -ggdb
 LDFLAGS =
 
 all: $(NAME)

@@ -28,6 +28,7 @@ typedef struct
     struct node *head;
     struct node *tail;
     char name[128];
+    int number;
 } stack;
 
 void    push(int data, stack *A);

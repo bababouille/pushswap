@@ -17,11 +17,12 @@ int inbetween(stack *A, stack *B)
 {  
     printf("INSIDE INBETWEEN\n");
 
-    if((A->head->data < B->head->next->data) && (A->head->data > B->head->data))
+    if((A->head->data > B->head->next->data) && (A->head->data < B->head->data))
     {
         printf("Condition IB!: 2\n");
+        rotate(B);
         pushb(A, B);
-        swap(B);
+        reverserotate(B);
         return 1;
     }
     return 0;
@@ -34,9 +35,13 @@ void    get_it_done(stack *A, stack *B)
     int rotatecount = 0;
     int i = 0;
 
-    while(A->head != NULL)
+    while(1)
     {
-        if(A->head->data > B->head->data)
+        if(A->head == NULL)
+        {
+            break;
+        }
+        else if(A->head->data > B->head->data)
         {
             printf("Condition 1: A->head->data > B->head->data\n");
             pushb(A, B);
@@ -55,7 +60,7 @@ void    get_it_done(stack *A, stack *B)
                 break;
             }
         }
-        else if(A->head->next->data > B->head->data)
+        else if((A->head->next != NULL) && (A->head->next->data > B->head->data))
         {
             printf("Condition 3: A->head->next->data > B->head->data\n");
             swap(A);
@@ -75,7 +80,7 @@ void    get_it_done(stack *A, stack *B)
                 break;
             }
         }
-        else if(A->head->next->data < B->tail->data)
+        else if((A->head->next != NULL) && (A->head->next->data < B->tail->data))
         {
             printf("Condition 5: A->head->next->data < B->tail->data\n");\
             swap(A);
@@ -88,7 +93,7 @@ void    get_it_done(stack *A, stack *B)
         }
         else if(A->tail->data < B->tail->data)
         {
-            printf("Condition 6: A->tail->data < B->tail->data\n");
+            printf("Condition 6: A->tail->data %d < B->tail->data %d\n", A->tail->data, B->tail->data);
             reverserotate(A);
             pushb(A, B);
             rotate(B);
@@ -107,8 +112,18 @@ void    get_it_done(stack *A, stack *B)
                 rotate(B);
                 rotatecount++;
             }   
-            break;
+            printf("OUTSIDE INBETWEEN\n");
+            
         }
+        printf("UN PRINT PLUS COOL POUR A\n");
+        printlist(A);
+        if (A->number > 0)
+        {printf("TAIL A IS %d\n", A->tail->data);}
+        printf("UN PRINT PLUS COOL POUR B\n");
+        printlist(B);
+        if (B->number > 0)
+        {printf("TAIL B IS %d\n", B->tail->data);}
+
     }
     printf("ROTATE COUNT IS :%d\n", rotatecount);
     while(i < rotatecount)
@@ -126,22 +141,27 @@ int main()
     stack *A = malloc(sizeof(stack));
     A->head = NULL;
     A->tail = NULL;
+    A->number = 0;
     strcpy(A->name, "a");
 
     stack *B = malloc(sizeof(stack));
     B->head = NULL;
     B->tail = NULL;
+    B->number = 0;
     strcpy(B->name, "b");
 
-    push(16, A); push(85, A); push(48, A); push(0, A); push(40, A); push(11, A); push(74, A);
+    push(10, A); push(85, A); push(15, A);push(100, A); push(438, A); push(16, A); push(55, A); push(535, A); 
     printlist(A);
-    printf("TAIL A IS %d\n", A->tail->data);
     pushb(A, B);
     pushb(A, B);
+  
     if(B->head->data < B->head->next->data)
     {
         swap(B);
     }
+    printf("ITS A\n");
+    printlist(A);
+    printf("ITS B\n");
     printlist(B);
 
     while(A->head)
@@ -156,8 +176,7 @@ int main()
         pusha(A, B);
     }   
     printlist(A);
-    printf("TAIL A IS %d\n", A->tail->data);
-    
+   
     free(A);
     free(B);
     

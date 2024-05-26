@@ -26,15 +26,21 @@ void printlist(stack *S)
 
 void    pop(stack *S)
 {
+    
     node *temp = S->head;
-
+    S->number--;
     S->head = S->head->next;
+    if(S->head == NULL)
+    {
+        S->tail = NULL;
+    }
     free(temp);
 }
 
 void    push(int data, stack *S)
 {
     node *new = malloc(sizeof(node));
+    S->number++;
   
     new->data = data;
     new->next = S->head;
@@ -110,7 +116,16 @@ void swap(stack *S)
 void rotate(stack *S)
 {
     node *temp = S->head;
-    
+    if(S->number == 2)
+    {
+        temp = S->head;
+        S->head = S->tail;
+        S->tail = temp;
+    }
+    else if(S->number == 1)
+    {
+        return;
+    }
     while (temp->next != NULL)
     {
         temp = temp->next;
@@ -126,37 +141,48 @@ void rotate(stack *S)
 void reverserotate(stack *S)
 {
     node *temp = S->head; // temp = 1st node 
-
+    if(S->number == 2)
+    {
+        temp = S->head;
+        S->head = S->tail;
+        S->tail = temp;
+    }
+    else if(S->number == 1)
+    {
+        return;
+    }
     while (temp->next->next != NULL)
     { 
         temp = temp->next;
     }
     temp->next->next = S->head; // NULL is now = to 1st node
     S->head = temp->next; // 1st node equal to second to last node
+    S->tail = temp;
     temp->next = NULL; // second to last node points to NULL
     printf("rr%s\n", S->name);
+    
 }
 
-void reverseboth(stack *A, stack *B)
-{
-    node *temp = A->head; // temp = 1st node 
+// void reverseboth(stack *A, stack *B)
+// {
+//     node *temp = A->head; // temp = 1st node 
 
-    while (temp->next->next != NULL)
-    { 
-        temp = temp->next;
-    }
-    temp->next->next = A->head; // NULL is now = to 1st node
-    A->head = temp->next; // 1st node equal to second to last node
-    temp->next = NULL; // second to last node points to NULL
+//     while (temp->next->next != NULL)
+//     { 
+//         temp = temp->next;
+//     }
+//     temp->next->next = A->head; // NULL is now = to 1st node
+//     A->head = temp->next; // 1st node equal to second to last node
+//     temp->next = NULL; // second to last node points to NULL
 
-    node *temp2 = B->head; // temp = 1st node 
+//     node *temp2 = B->head; // temp = 1st node 
 
-    while (temp2->next->next != NULL)
-    { 
-        temp2 = temp2->next;
-    }
-    temp2->next->next = B->head; // NULL is now = to 1st node
-    B->head = temp2->next; // 1st node equal to second to last node
-    temp2->next = NULL; // second to last node points to NULL
-    printf("rrr\n");
-}
+//     while (temp2->next->next != NULL)
+//     { 
+//         temp2 = temp2->next;
+//     }
+//     temp2->next->next = B->head; // NULL is now = to 1st node
+//     B->head = temp2->next; // 1st node equal to second to last node
+//     temp2->next = NULL; // second to last node points to NULL
+//     printf("rrr\n");
+// }
