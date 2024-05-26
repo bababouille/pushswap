@@ -122,9 +122,6 @@ void    get_it_done(stack *A, stack *B)
         }
         rotatecount = 0;
         i = 0;
-        printf("!!@##^#^&@^*&!@*&@#*&#*\n");
-        printlist(B);
-        printf("!!@##^#^&@^*&!@*&@#*&#*\n");
         while (B->head->data < B->tail->data)
         {
             reverserotate(B);
