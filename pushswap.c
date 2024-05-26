@@ -157,12 +157,11 @@ int main(int argc, char **argv)
     B->tail = NULL;
     B->number = 0;
     strcpy(B->name, "b");
-
-    while (argv[1])
+    int i = 1;
+    while (i < argc)
     {
-        int x = 0;
-        
-        push(argv[1], A);
+        push(atoi(argv[i]), A);
+        i++;
     }
     printlist(A);
     pushb(A, B);
