@@ -176,8 +176,6 @@ int main(int argc, char **argv)
     while(A->head)
     {
       get_it_done(A, B);
-      printf("GET IT DONE! GOT DONE!!\n");  
-      printlist(B);
     }
     printf("WROOR!!\n");  
     while(B->head)
