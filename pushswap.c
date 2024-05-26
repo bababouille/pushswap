@@ -115,6 +115,20 @@ void    get_it_done(stack *A, stack *B)
             printf("OUTSIDE INBETWEEN\n");
             
         }
+        while(i < rotatecount)
+        {
+            reverserotate(B);
+            i++;
+        }
+        rotatecount = 0;
+        i = 0;
+        printf("!!@##^#^&@^*&!@*&@#*&#*\n");
+        printlist(B);
+        printf("!!@##^#^&@^*&!@*&@#*&#*\n");
+        while (B->head->data < B->tail->data)
+        {
+            reverserotate(B);
+        }
         printf("UN PRINT PLUS COOL POUR A\n");
         printlist(A);
         if (A->number > 0)
@@ -126,17 +140,11 @@ void    get_it_done(stack *A, stack *B)
 
     }
     printf("ROTATE COUNT IS :%d\n", rotatecount);
-    while(i < rotatecount)
-    {
-        reverserotate(B);
-        i++;
-    }
-    rotatecount = 0;
-    i = 0;
+    
 }
 
 
-int main()
+int main(int argc, char **argv)
 {
     stack *A = malloc(sizeof(stack));
     A->head = NULL;
@@ -150,7 +158,12 @@ int main()
     B->number = 0;
     strcpy(B->name, "b");
 
-    push(10, A); push(85, A); push(15, A);push(100, A); push(438, A); push(16, A); push(55, A); push(535, A); 
+    while (argv[1])
+    {
+        int x = 0;
+        
+        push(argv[1], A);
+    }
     printlist(A);
     pushb(A, B);
     pushb(A, B);
