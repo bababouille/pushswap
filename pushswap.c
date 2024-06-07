@@ -51,6 +51,15 @@ void    get_it_done(stack *A, stack *B)
                 break;
             }
         }
+        else if(A->head->data < B->head->data && A->head->data > B->head->next->data)
+        {
+            pushb(A,B);
+            swap(B);
+            if(rotatecount > 0)
+            {
+                break;
+            }
+        }
         else if((A->head->next != NULL) && (A->head->next->data > B->head->data))
         {
             swap(A);
@@ -128,11 +137,16 @@ int main(int argc, char **argv)
     }
     pushb(A, B);
     pushb(A, B); 
+    printf("Head Data %d\n",B->head->data);
+    printf("Head NEXT Data %d\n",B->head->next->data);
     if(B->head->data < B->head->next->data)
     {
+        printf("Head Data %d\n",B->head->data);
+        printf("Head NEXT Data %d\n",B->head->next->data);
         swap(B);
     }
-
+    printf("Head Data %d\n",B->head->data);
+    printf("Head NEXT Data %d\n",B->head->next->data);
     while(A->head)
     {
       get_it_done(A, B);
