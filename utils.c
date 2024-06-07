@@ -163,26 +163,26 @@ void reverserotate(stack *S)
     
 }
 
-// void reverseboth(stack *A, stack *B)
-// {
-//     node *temp = A->head; // temp = 1st node 
+void reverseboth(stack *A, stack *B)
+{
+    node *temp = A->head; // temp = 1st node 
 
-//     while (temp->next->next != NULL)
-//     { 
-//         temp = temp->next;
-//     }
-//     temp->next->next = A->head; // NULL is now = to 1st node
-//     A->head = temp->next; // 1st node equal to second to last node
-//     temp->next = NULL; // second to last node points to NULL
+    while (temp->next->next != NULL)
+    { 
+        temp = temp->next;
+    }
+    temp->next->next = A->head; // NULL is now = to 1st node
+    A->head = temp->next; // 1st node equal to second to last node
+    temp->next = NULL; // second to last node points to NULL
 
-//     node *temp2 = B->head; // temp = 1st node 
+    node *temp2 = B->head; // temp = 1st node 
 
-//     while (temp2->next->next != NULL)
-//     { 
-//         temp2 = temp2->next;
-//     }
-//     temp2->next->next = B->head; // NULL is now = to 1st node
-//     B->head = temp2->next; // 1st node equal to second to last node
-//     temp2->next = NULL; // second to last node points to NULL
-//     printf("rrr\n");
-// }
+    while (temp2->next->next != NULL)
+    { 
+        temp2 = temp2->next;
+    }
+    temp2->next->next = B->head; // NULL is now = to 1st node
+    B->head = temp2->next; // 1st node equal to second to last node
+    temp2->next = NULL; // second to last node points to NULL
+    printf("rrr\n");
+}
