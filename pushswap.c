@@ -15,26 +15,19 @@
 
 int inbetween(stack *A, stack *B)
 {  
-    printf("INSIDE INBETWEEN\n");
-
     if((A->head->data > B->head->next->data) && (A->head->data < B->head->data))
     {
-        printf("Condition IB!: 2\n");
         rotate(B);
         pushb(A, B);
         reverserotate(B);
         return 1;
     }
     return 0;
-
 }
-
 
 void    get_it_done(stack *A, stack *B)
 {
     int rotatecount = 0;
-    int i = 0;
-
     while(1)
     {
         if(A->head == NULL)
@@ -43,7 +36,6 @@ void    get_it_done(stack *A, stack *B)
         }
         else if(A->head->data > B->head->data)
         {
-            printf("Condition 1: A->head->data > B->head->data\n");
             pushb(A, B);
             if(rotatecount > 0)
             {
@@ -52,7 +44,6 @@ void    get_it_done(stack *A, stack *B)
         }
         else if(A->head->data < B->tail->data)
         {
-            printf("Condition 2: A->head->data < B->tail->data\n");
             pushb(A, B);
             rotate(B);
             if(rotatecount > 0)
@@ -62,7 +53,6 @@ void    get_it_done(stack *A, stack *B)
         }
         else if((A->head->next != NULL) && (A->head->next->data > B->head->data))
         {
-            printf("Condition 3: A->head->next->data > B->head->data\n");
             swap(A);
             pushb(A, B);
             if(rotatecount > 0)
@@ -72,7 +62,6 @@ void    get_it_done(stack *A, stack *B)
         } 
         else if(A->tail->data > B->head->data)
         {
-            printf("Condition 4: A->tail->data > B->head->data\n");
             reverserotate(A);
             pushb(A, B);
             if(rotatecount > 0)
@@ -82,7 +71,6 @@ void    get_it_done(stack *A, stack *B)
         }
         else if((A->head->next != NULL) && (A->head->next->data < B->tail->data))
         {
-            printf("Condition 5: A->head->next->data < B->tail->data\n");\
             swap(A);
             pushb(A, B);
             rotate(B);
@@ -93,7 +81,6 @@ void    get_it_done(stack *A, stack *B)
         }
         else if(A->tail->data < B->tail->data)
         {
-            printf("Condition 6: A->tail->data %d < B->tail->data %d\n", A->tail->data, B->tail->data);
             reverserotate(A);
             pushb(A, B);
             rotate(B);
@@ -104,42 +91,21 @@ void    get_it_done(stack *A, stack *B)
         }
         else
         {
-            printf("Else case: rotating B\n");
             rotate(B);
             rotatecount++;
             while(!inbetween(A, B))
             {
                 rotate(B);
                 rotatecount++;
-            }   
-            printf("OUTSIDE INBETWEEN\n");
-            
-        }
-        while(i < rotatecount)
-        {
-            reverserotate(B);
-            i++;
+            }       
         }
         rotatecount = 0;
-        i = 0;
         while (B->head->data < B->tail->data)
         {
             reverserotate(B);
         }
-        printf("UN PRINT PLUS COOL POUR A\n");
-        printlist(A);
-        if (A->number > 0)
-        {printf("TAIL A IS %d\n", A->tail->data);}
-        printf("UN PRINT PLUS COOL POUR B\n");
-        printlist(B);
-        if (B->number > 0)
-        {printf("TAIL B IS %d\n", B->tail->data);}
-
-    }
-    printf("ROTATE COUNT IS :%d\n", rotatecount);
-    
+    }  
 }
-
 
 int main(int argc, char **argv)
 {
@@ -160,30 +126,23 @@ int main(int argc, char **argv)
         push(atoi(argv[i]), A);
         i++;
     }
-    printlist(A);
     pushb(A, B);
-    pushb(A, B);
-  
+    pushb(A, B); 
     if(B->head->data < B->head->next->data)
     {
         swap(B);
     }
-    printf("ITS A\n");
-    printlist(A);
-    printf("ITS B\n");
-    printlist(B);
 
     while(A->head)
     {
       get_it_done(A, B);
     }
-    printf("WROOR!!\n");  
     while(B->head)
     {
         pusha(A, B);
     }   
     printlist(A);
-   
+    printlist(B);
     free(A);
     free(B);
     
