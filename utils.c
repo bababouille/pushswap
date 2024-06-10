@@ -63,6 +63,7 @@ void    pusha(stack *A, stack *B)
 
 void    pushb(stack *A, stack *B)
 {
+    B->number++;
     if(A->head)
     {
         push(A->head->data, B);

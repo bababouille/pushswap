@@ -12,6 +12,40 @@
 
 #include "pushswap.h"
 
+int minimum(int a, int b)
+{
+    if(a < b)
+    {
+        return 0;
+    }
+    return 1;
+}
+
+void idk(stack *A, stack *B)
+{
+    node *temp = A->head;
+    node *temp2 = B->head;
+
+    int index = -1;
+    int bestindex = 0;
+    int value = -1;
+    while(temp != NULL)
+    {
+        index++;
+        if (minimum(index, S->number - index) == 0);
+        {
+            while(temp->data < temp2->data)
+            {
+                tindex = 0;
+                tindex++;
+                temp2 = temp2->next->data;
+            }
+        }
+        
+        temp = temp->next
+    }
+}
+
 
 int inbetween(stack *A, stack *B)
 {  
@@ -22,30 +56,6 @@ int inbetween(stack *A, stack *B)
         reverserotate(B);
         return 1;
     }
-    else if(A->head->data > B->head->data && A->head->data < B->tail->data)
-            {
-                pushb(A, B);
-                return 1;
-            }
-    else if(A->head->data < B->head->data && A->head->data > B->head->next->data)
-            {
-                rotate(B);
-                pushb(A, B);
-                return 1;
-            }
-    else if((A->tail->data > B->head->data && A->tail->data < B->tail->data))
-            {
-                reverserotate(A);
-                pushb(A, B);
-                return 1;
-            }
-    else if((A->tail->data < B->head->data && A->tail->data > B->head->next->data))
-            {
-                reverserotate(A);
-                pushb(A, B);
-                swap(B);
-                return 1;
-            }
     return 0;
 }
 
@@ -115,26 +125,6 @@ void    get_it_done(stack *A, stack *B)
         }
         while (B->head->data < B->tail->data)
         { 
-            if (A->head != NULL && (A->head->data > B->head->data && A->head->data < B->tail->data))
-            {
-                pushb(A, B);
-            }
-            else if (A->head != NULL && (A->head->data < B->head->data && A->head->data > B->head->next->data))
-            {
-                rotate(B);
-                pushb(A, B);
-            }
-            else if (A->tail != NULL && (A->tail->data > B->head->data && A->tail->data < B->tail->data))
-            {
-                reverserotate(A);
-                pushb(A, B);
-            }
-            else if (A->tail != NULL && (A->tail->data < B->head->data && A->tail->data > B->head->next->data))
-            {
-                reverserotate(A);
-                pushb(A, B);
-                swap(B);
-            }
             reverserotate(B);
         }
     }  
