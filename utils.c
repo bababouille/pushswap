@@ -41,7 +41,6 @@ void    push(int data, stack *S)
 {
     node *new = malloc(sizeof(node));
     S->number++;
-  
     new->data = data;
     new->next = S->head;
     S->head = new;
@@ -63,7 +62,6 @@ void    pusha(stack *A, stack *B)
 
 void    pushb(stack *A, stack *B)
 {
-    B->number++;
     if(A->head)
     {
         push(A->head->data, B);
@@ -116,12 +114,18 @@ void swap(stack *S)
 
 void rotate(stack *S)
 {
+    //doesnt work;
     node *temp = S->head;
     if(S->number == 2)
     {
         temp = S->head;
         S->head = S->tail;
         S->tail = temp;
+        S->head->next = S->tail;
+        S->tail->next = NULL;
+        printf("r%s\n", S->name);    
+        return;   
+        
     }
     else if(S->number == 1)
     {
@@ -147,6 +151,11 @@ void reverserotate(stack *S)
         temp = S->head;
         S->head = S->tail;
         S->tail = temp;
+        S->head->next = S->tail;
+        S->tail->next = NULL; 
+        printf("rr%s\n", S->name);
+        return;
+       
     }
     else if(S->number == 1)
     {

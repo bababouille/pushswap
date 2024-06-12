@@ -12,123 +12,148 @@
 
 #include "pushswap.h"
 
-int minimum(int a, int b)
-{
-    if(a < b)
-    {
-        return 0;
-    }
-    return 1;
+int minimum(int a, int b) {
+    return (a < b) ? 0 : 1;
 }
 
-void idk(stack *A, stack *B)
-{
+// Helper function to get the optimal index for aligning stack B
+int get_optimal_index(stack *A, stack *B) {
     node *temp = A->head;
-    node *temp2 = B->head;
+    int best_index = -1;
+    int best_value = INT_MAX;
+    int index = 0;
 
-    int index = -1;
-    int bestindex = 0;
-    int value = -1;
-    while(temp != NULL)
-    {
-        index++;
-        if (minimum(index, S->number - index) == 0);
-        {
-            while(temp->data < temp2->data)
-            {
-                tindex = 0;
-                tindex++;
-                temp2 = temp2->next->data;
-            }
-        }
+    while (temp != NULL) {
+        int value = 0;
+        int moves_A = minimum(index, A->number - index) == 0 ? index : A->number - index;
+        int moves_B = 0;
+        node *temp2 = B->head;
         
-        temp = temp->next
+        // Calculate the number of moves needed in stack B
+        while (temp2 != NULL && temp->data < temp2->data) {
+            moves_B++;
+            temp2 = temp2->next;
+        }
+        moves_B = minimum(moves_B, B->number - moves_B) == 0 ? moves_B : B->number - moves_B;
+        moves_B = moves_B * 2;
+        // Total moves to align this element
+        printf("OLD VALUE = %d\n", value);
+        value = moves_A + moves_B;
+        printf("NEW VALUE = %d\n", value);
+
+        if (value < best_value) {
+            best_value = value;
+            best_index = index;
+        }
+        printlist(A);
+        printlist(B);
+        printf("BEST VALUE%d\nMOVE A%d : MOVE B%d\nBEST INDEX%d\n", best_value,moves_A, moves_B, best_index);
+        index++;
+        temp = temp->next;
     }
+    return best_index;
 }
 
+void align_stacks(stack *A, stack *B) {  
+    node *tempA = A->head;
+    int optimal_index = get_optimal_index(A, B);
 
-int inbetween(stack *A, stack *B)
-{  
-    if((A->head->data > B->head->next->data) && (A->head->data < B->head->data))
+    // Move tempA to the optimal index using a while loop
+    int i = 0;
+    while (i < optimal_index) 
     {
-        rotate(B);
+        tempA = tempA->next;
+        i++;
+    }
+    // Align stack A
+    if (minimum(optimal_index, A->number - optimal_index) == 0) 
+    {
+        i = 0;
+        while (i < optimal_index) 
+        {
+            rotate(A);
+            i++;
+        }
+    } 
+    else 
+    {
+        i = 0;
+        while (i < (A->number - optimal_index)) 
+        {
+            reverserotate(A);
+            i++;
+        }
+    }
+    // Align stack B
+    node *tempB = B->head;
+    int indexB = 0;
+    
+    printf("tempA DATA ID = %d\n", tempA->data);
+    printlist(A);
+
+    while (tempB != NULL && tempB->data > tempA->data) 
+    {
+        indexB++;
+        tempB = tempB->next;
+    }
+           
+    if (minimum(indexB, B->number - indexB) == 0) 
+    {
+        i = 0; 
+        printf("+++++++++++++BEFORE WHILE |||IF|||++++++++++++++\n");
+        printf("INDEXB = %d\n", indexB );
+        printf("B->NUMBER VALUE = %d\n", B->number);
+        printlist(B);
+        while (i < indexB) {
+            rotate(B);
+            i++;
+        }
+        printf("+++++++++++++BEFORE PUSHB ||| IF |||++++++++++++++\n");
+        printlist(B);
         pushb(A, B);
-        reverserotate(B);
-        return 1;
+        printf("+++++++++++++AFTER PUSHB ||| IF |||++++++++++++++\n");
+        printlist(B);
+        if(B->head->data < B->tail->data){
+        while( i > 0)
+        {
+            reverserotate(B);
+            i--;
+        }}
+        printf("+++++++++++++AFTER WHILE |||IF|||++++++++++++++\n");
+        printlist(B);
+    } 
+    else 
+    {
+        i = 0;
+        printf("+++++++++++++BEFORE WHILE |||ELSE|||++++++++++++++\n");
+        printf("INDEX = %d\n", indexB );
+        printf("B->NUMBER VALUE = %d\n", B->number);
+        printlist(B);
+        while (i < (B->number - indexB)) 
+        {
+            reverserotate(B);
+            i++;
+        }
+        printf("+++++++++++++BEFORE PUSHB ||| ELSE |||++++++++++++++\n");
+        printlist(B);
+        pushb(A, B);
+        printf("+++++++++++++AFTER PUSHB++++++++++++++\n");
+        printlist(B);
+        printf("VALUE OF I %d\n", i);
+        if(B->head->data < B->tail->data){
+        while(i > 0)
+        {
+            printf("+++++++++++++INSIDE WHILE |||ELSE|||++++++++++++++\n");
+            rotate(B);
+            printf("+++++++++++++AFTER WHILE |||ELSE|||++++++++++++++\n");
+            i--;
+        } 
+        }
+        printf("+++++++++++++AFTER WHILE |||ELSE|||++++++++++++++\n");
+        printlist(B);
     }
-    return 0;
 }
 
-void    get_it_done(stack *A, stack *B)
-{
-    while(1)
-    {
-        if(A->head == NULL)
-        {
-            break;
-        }
-        else if(A->head->data > B->head->data)
-        {
-            pushb(A, B);
-        }
-        else if(A->head->data < B->tail->data)
-        {
-            pushb(A, B);
-            rotate(B);
-        }
-        else if(A->head->data < B->head->data && A->head->data > B->head->next->data)
-        {
-            pushb(A,B);
-            swap(B);
-        }
-        else if((A->head->next != NULL) && (A->head->next->data > B->head->data))
-        {
-            swap(A);
-            pushb(A, B);
-        } 
-        else if((A->head->next != NULL) && (A->head->next->data < B->tail->data))
-        {
-            swap(A);
-            pushb(A, B);
-            rotate(B);
-        }     
-        else if((A->head->next != NULL) && (A->head->next->data < B->head->data && A->head->next->data > B->head->next->data))
-        {
-            swap(A);
-            pushb(A, B);
-            swap(B);
-        }
-        else if(A->tail->data > B->head->data)
-        {
-            reverserotate(A);
-            pushb(A, B);
-        }
-        else if(A->tail->data < B->tail->data)
-        {
-            reverserotate(A);
-            pushb(A, B);
-            rotate(B);
-        }
-        else if(A->tail->data < B->head->data && A->tail->data > B->head->next->data)
-        {
-            reverserotate(A);
-            pushb(A, B);
-            swap(B);
-        }
-        else
-        {
-            rotate(B);
-            while(!inbetween(A, B))
-            {
-                rotate(B);
-            }       
-        }
-        while (B->head->data < B->tail->data)
-        { 
-            reverserotate(B);
-        }
-    }  
-}
 
 int main(int argc, char **argv)
 {
@@ -150,14 +175,15 @@ int main(int argc, char **argv)
         i++;
     }
     pushb(A, B);
-    pushb(A, B); 
+    pushb(A, B);
+    printf("B NUMBER AFTER PB %d\n", B->number) ;
     if(B->head->data < B->head->next->data)
     {
         swap(B);
     }
     while(A->head)
     {
-      get_it_done(A, B);
+       align_stacks(A, B);
     }
     while(B->head)
     {

@@ -8,10 +8,10 @@ LDFLAGS =
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(LDFLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(LDFLAGS) $(OBJ) -o $(NAME) && clear
 
 %.o: %.c pushswap.h
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ 
 
 clean:
 	rm -f $(OBJ)
