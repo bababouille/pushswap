@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pushswap.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/08 16:06:21 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/08 16:06:21 by marvin           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "pushswap.h"
 
 int minimum(int a, int b) {
@@ -45,9 +33,7 @@ int get_optimal_index(stack *A, stack *B) {
             best_value = value;
             best_index = index;
         }
-        printlist(A);
-        printlist(B);
-        printf("BEST VALUE%d\nMOVE A%d : MOVE B%d\nBEST INDEX%d\n", best_value,moves_A, moves_B, best_index);
+     
         index++;
         temp = temp->next;
     }
@@ -88,8 +74,7 @@ void align_stacks(stack *A, stack *B) {
     node *tempB = B->head;
     int indexB = 0;
     
-    printf("tempA DATA ID = %d\n", tempA->data);
-    printlist(A);
+    
 
     while (tempB != NULL && tempB->data > tempA->data) 
     {
@@ -100,57 +85,47 @@ void align_stacks(stack *A, stack *B) {
     if (minimum(indexB, B->number - indexB) == 0) 
     {
         i = 0; 
-        printf("+++++++++++++BEFORE WHILE |||IF|||++++++++++++++\n");
-        printf("INDEXB = %d\n", indexB );
-        printf("B->NUMBER VALUE = %d\n", B->number);
-        printlist(B);
+        
         while (i < indexB) {
             rotate(B);
             i++;
         }
-        printf("+++++++++++++BEFORE PUSHB ||| IF |||++++++++++++++\n");
-        printlist(B);
+        
         pushb(A, B);
-        printf("+++++++++++++AFTER PUSHB ||| IF |||++++++++++++++\n");
-        printlist(B);
+        
         if(B->head->data < B->tail->data){
         while( i > 0)
         {
             reverserotate(B);
             i--;
         }}
-        printf("+++++++++++++AFTER WHILE |||IF|||++++++++++++++\n");
-        printlist(B);
+        
     } 
     else 
     {
         i = 0;
-        printf("+++++++++++++BEFORE WHILE |||ELSE|||++++++++++++++\n");
-        printf("INDEX = %d\n", indexB );
-        printf("B->NUMBER VALUE = %d\n", B->number);
-        printlist(B);
+        
         while (i < (B->number - indexB)) 
         {
             reverserotate(B);
             i++;
         }
-        printf("+++++++++++++BEFORE PUSHB ||| ELSE |||++++++++++++++\n");
-        printlist(B);
+        
+        
         pushb(A, B);
-        printf("+++++++++++++AFTER PUSHB++++++++++++++\n");
-        printlist(B);
-        printf("VALUE OF I %d\n", i);
+        
+        
+        
         if(B->head->data < B->tail->data){
-        while(i > 0)
+        while(i >= 0)
         {
-            printf("+++++++++++++INSIDE WHILE |||ELSE|||++++++++++++++\n");
+            
             rotate(B);
-            printf("+++++++++++++AFTER WHILE |||ELSE|||++++++++++++++\n");
+            
             i--;
         } 
         }
-        printf("+++++++++++++AFTER WHILE |||ELSE|||++++++++++++++\n");
-        printlist(B);
+        
     }
 }
 
