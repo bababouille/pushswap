@@ -5,6 +5,40 @@ int minimum(int a, int b) {
     return (a < b) ? 0 : 1;
 }
 
+void checkforboth(stack *A, stack *B, int i)
+{
+    node *tempA = A->head;
+    node *tempB = B->head;
+    int indexB = 0;
+
+    while (tempB != NULL && tempB->data > tempA->data) 
+    {
+        indexB++;
+        tempB = tempB->next;
+    }
+    i = minimum(i, A->number - i) == 0 ? i : A->number - i;
+    indexB = minimum(indexB, B->number - indexB) == 0 ? indexB : B->number - indexB;
+    if((minimum(i, A->number - i) == 0) && (minimum(indexB, B->number - indexB) == 0))
+    {
+        int x = 0;
+        while (x < i && x < indexB) 
+        {
+            rotateboth(A, B);
+            x++;
+        }
+    }
+     else 
+    {
+        int x = 0;
+
+        while(x < (A->number - i) && x < (B->number - indexB) ) 
+        {
+            reverseboth(A, B);
+            x++;
+        }
+    }
+}
+
 int check(stack *A, stack *B)
 {
   node *temp = A->head;
@@ -49,13 +83,10 @@ int get_optimal_index(stack *A, stack *B)
         int moves_B = 0;
         node *temp2 = B->head;
         
-        while (temp2 != NULL && temp->data < temp2->data) 
-        {
+        while (temp2 != NULL && temp->data < temp2->data) {
             moves_B++;
             temp2 = temp2->next;
         }
-        while 
-
         moves_B = minimum(moves_B, B->number - moves_B) == 0 ? moves_B : B->number - moves_B;
 
         int value = moves_A + moves_B;
@@ -72,6 +103,7 @@ int get_optimal_index(stack *A, stack *B)
     {
         return checkinferior;
     }
+
     return best_index;
 }
 
@@ -122,6 +154,7 @@ void align_stack_b(stack *B, int indexB)
 void align_stacks(stack *A, stack *B) 
 {  
     int optimal_index = get_optimal_index(A, B);
+    checkforboth(A, B, optimal_index);
     align_stack_a(A, optimal_index);
     
     node *tempA = A->head;
@@ -133,7 +166,7 @@ void align_stacks(stack *A, stack *B)
         indexB++;
         tempB = tempB->next;
     }
-    
+
     align_stack_b(B, indexB);
     pushb(A, B);
 
