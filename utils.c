@@ -143,6 +143,36 @@ void rotate(stack *S)
     printf("r%s\n", S->name);
 }
 
+void rotateboth(stack *A, stack *B)
+{
+    node *temp = A->head;
+    node *tempb = B->head;
+    if(A->number == 1)
+    {
+        return;
+    }
+    while (temp->next != NULL)
+    {
+        temp = temp->next;
+    }
+    temp->next = A->head; // Make the last node point to the head of the stack, creating a circular linked list
+    temp = temp->next; // Move 'temp' to the new last node, which is the previous head
+    A->head = A->head->next; // Update the head of the stack to point to the second node
+    A->tail = temp;
+    temp->next = NULL; // Break the circular link by setting the next pointer of the last node to NULL
+     
+    while (tempb->next != NULL)
+    {
+        tempb = tempb->next;
+    }
+    tempb->next = B->head; // Make the last node point to the head of the stack, creating a circular linked list
+    tempb = tempb->next; // Move 'temp' to the new last node, which is the previous head
+    B->head = B->head->next; // Update the head of the stack to point to the second node
+    B->tail = tempb;
+    tempb->next = NULL; // Break the circular link by setting the next pointer of the last node to NULL
+    printf("rr\n");
+}
+
 void reverserotate(stack *S)
 {
     node *temp = S->head; // temp = 1st node 

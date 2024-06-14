@@ -40,6 +40,7 @@ void    ss(stack *A, stack *B);
 void    pusha(stack *A, stack *B);
 void    pushb(stack *A, stack *B);
 void    rotate(stack *S);
+void    rotateboth(stack *A, stack *B);
 void    reverserotate(stack *S);
 void    reverseboth(stack *A, stack *B);
 
