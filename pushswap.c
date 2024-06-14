@@ -5,31 +5,72 @@ int minimum(int a, int b) {
     return (a < b) ? 0 : 1;
 }
 
-int get_optimal_index(stack *A, stack *B) {
-    node *temp = A->head;
+int check(stack *A, stack *B)
+{
+  node *temp = A->head;
     int best_index = -1;
     int best_value = INT_MAX;
     int index = 0;
 
-    while (temp != NULL) {
+    while (temp != NULL) 
+    {
         int moves_A = minimum(index, A->number - index) == 0 ? index : A->number - index;
         int moves_B = 0;
         node *temp2 = B->head;
         
-        while (temp2 != NULL && temp->data < temp2->data) {
+        while (temp2 != NULL && temp->data > temp2->data) {
             moves_B++;
             temp2 = temp2->next;
         }
         moves_B = minimum(moves_B, B->number - moves_B) == 0 ? moves_B : B->number - moves_B;
 
         int value = moves_A + moves_B;
-        if (value < best_value) {
+        if (value < best_value)
+        {
             best_value = value;
             best_index = index;
         }
-     
         index++;
         temp = temp->next;
+    }
+    return best_index;
+}
+int get_optimal_index(stack *A, stack *B) 
+{
+    node *temp = A->head;
+    int best_index = -1;
+    int best_value = INT_MAX;
+    int index = 0;
+    int checkinferior = 0;
+
+    while (temp != NULL) 
+    {
+        int moves_A = minimum(index, A->number - index) == 0 ? index : A->number - index;
+        int moves_B = 0;
+        node *temp2 = B->head;
+        
+        while (temp2 != NULL && temp->data < temp2->data) 
+        {
+            moves_B++;
+            temp2 = temp2->next;
+        }
+        while 
+
+        moves_B = minimum(moves_B, B->number - moves_B) == 0 ? moves_B : B->number - moves_B;
+
+        int value = moves_A + moves_B;
+        if (value < best_value)
+        {
+            best_value = value;
+            best_index = index;
+        }
+        index++;
+        temp = temp->next;
+    }
+    checkinferior = check(A, B);
+    if(checkinferior < best_index)
+    {
+        return checkinferior;
     }
     return best_index;
 }
@@ -92,7 +133,7 @@ void align_stacks(stack *A, stack *B)
         indexB++;
         tempB = tempB->next;
     }
-
+    
     align_stack_b(B, indexB);
     pushb(A, B);
 
