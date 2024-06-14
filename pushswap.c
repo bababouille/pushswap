@@ -1,12 +1,10 @@
 #include "pushswap.h"
 #include <limits.h>
 
-// Function to calculate minimum number of moves to align the stack
 int minimum(int a, int b) {
     return (a < b) ? 0 : 1;
 }
 
-// Function to get the optimal index for aligning stack B
 int get_optimal_index(stack *A, stack *B) {
     node *temp = A->head;
     int best_index = -1;
@@ -36,34 +34,52 @@ int get_optimal_index(stack *A, stack *B) {
     return best_index;
 }
 
-// Function to align stack A to the optimal index
-void align_stack_a(stack *A, int optimal_index) {
-    if (minimum(optimal_index, A->number - optimal_index) == 0) {
-        for (int i = 0; i < optimal_index; i++) {
+void align_stack_a(stack *A, int optimal_index) 
+{
+    if (minimum(optimal_index, A->number - optimal_index) == 0) 
+    {
+        int i= 0;
+        while (i < optimal_index) 
+        {
             rotate(A);
+            i++;
         }
-    } else {
-        for (int i = 0; i < (A->number - optimal_index); i++) {
+    } 
+    else 
+    {
+        int i = 0;
+        while(i < (A->number - optimal_index)) 
+        {
             reverserotate(A);
+            i++;
         }
     }
 }
 
-// Function to align stack B to the optimal position
-void align_stack_b(stack *B, int indexB) {
-    if (minimum(indexB, B->number - indexB) == 0) {
-        for (int i = 0; i < indexB; i++) {
+void align_stack_b(stack *B, int indexB) 
+{
+    if (minimum(indexB, B->number - indexB) == 0) 
+    {
+        int i = 0;
+        while ( i < indexB)
+        {
             rotate(B);
+            i++;
         }
-    } else {
-        for (int i = 0; i < (B->number - indexB); i++) {
-            reverserotate(B);
+    } 
+    else 
+    {
+        int i = 0;
+        while (i < (B->number - indexB)) 
+        {
+            reverserotate(B); 
+            i++;
         }
     }
 }
 
-// Function to align stacks A and B
-void align_stacks(stack *A, stack *B) {  
+void align_stacks(stack *A, stack *B) 
+{  
     int optimal_index = get_optimal_index(A, B);
     align_stack_a(A, optimal_index);
     
@@ -71,7 +87,8 @@ void align_stacks(stack *A, stack *B) {
     node *tempB = B->head;
     int indexB = 0;
 
-    while (tempB != NULL && tempB->data > tempA->data) {
+    while (tempB != NULL && tempB->data > tempA->data) 
+    {
         indexB++;
         tempB = tempB->next;
     }
@@ -79,20 +96,31 @@ void align_stacks(stack *A, stack *B) {
     align_stack_b(B, indexB);
     pushb(A, B);
 
-    if (B->head->data < B->tail->data) {
-        if (indexB <= B->number / 2) {
-            for (int i = 0; i < indexB; i++) {
+    if (B->head->data < B->tail->data) 
+    {
+        if (indexB <= B->number / 2) 
+        {
+            int i = 0;
+            while ( i < indexB) 
+            {
                 reverserotate(B);
+                i++;
             }
-        } else {
-            for (int i = 0; i < (B->number - indexB); i++) {
+        } 
+        else 
+        {
+            int i = 0;
+            while (i < (B->number - indexB))
+            {
                 rotate(B);
+                i++;
             }
         }
     }
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) 
+{
     stack *A = malloc(sizeof(stack));
     A->head = NULL;
     A->tail = NULL;
@@ -104,24 +132,30 @@ int main(int argc, char **argv) {
     B->tail = NULL;
     B->number = 0;
     strcpy(B->name, "b");
-
-    for (int i = 1; i < argc; i++) {
+    
+    int i = 1;
+    while (i < argc) 
+    {
         push(atoi(argv[i]), A);
+        i++;
     }
 
     pushb(A, B);
     pushb(A, B);
 
 
-    if (B->head->data < B->head->next->data) {
+    if (B->head->data < B->head->next->data) 
+    {
         swap(B);
     }
 
-    while (A->head) {
+    while (A->head) 
+    {
         align_stacks(A, B);
     }
     
-    while (B->head) {
+    while (B->head) 
+    {
         pusha(A, B);
     }
 
