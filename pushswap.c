@@ -54,8 +54,6 @@ int get_optimal_index(stack *A, stack *B)
             moves_B++;
             temp2 = temp2->next;
         }
-        while 
-
         moves_B = minimum(moves_B, B->number - moves_B) == 0 ? moves_B : B->number - moves_B;
 
         int value = moves_A + moves_B;
