@@ -1,37 +1,33 @@
 #include "pushswap.h"
 #include <limits.h>
 
-int minimum(int a, int b) {
+int minimum(int a, int b) 
+{
     return (a < b) ? 0 : 1;
 }
 
-void checkforboth(stack *A, stack *B, int i)
+void checkforboth(stack *A, stack *B, int a, int b)
 {
-    node *tempA = A->head;
-    node *tempB = B->head;
-    int indexB = 0;
-
-    while (tempB != NULL && tempB->data > tempA->data) 
-    {
-        indexB++;
-        tempB = tempB->next;
-    }
-    i = minimum(i, A->number - i) == 0 ? i : A->number - i;
-    indexB = minimum(indexB, B->number - indexB) == 0 ? indexB : B->number - indexB;
-    if((minimum(i, A->number - i) == 0) && (minimum(indexB, B->number - indexB) == 0))
+    printf("INSIDE CHECK FOR BOTH\n");
+    printf("IN HERE BITCH A%d\n", a);
+    printf("IN HERE BITCH B%d\n", b);
+    a = minimum(a, A->number - a) == 0 ? a : A->number - a;
+    b = minimum(b, B->number - b) == 0 ? b : B->number - b;
+    printf("IN HERE BITCH A%d\n", a);
+    printf("IN HERE BITCH B%d\n", b);
+    if((minimum(a, A->number - a) == 0) && (minimum(b, B->number - b) == 0))
     {
         int x = 0;
-        while (x < i && x < indexB) 
+        while (x < a && x < b) 
         {
             rotateboth(A, B);
             x++;
         }
     }
-     else 
+     else if ((minimum(a, A->number - a) == 1) && (minimum(b, B->number - b) == 1))
     {
         int x = 0;
-
-        while(x < (A->number - i) && x < (B->number - indexB) ) 
+        while(x < (A->number - a) && x < (B->number - b) ) 
         {
             reverseboth(A, B);
             x++;
@@ -69,7 +65,25 @@ int check(stack *A, stack *B)
     }
     return best_index;
 }
-int get_optimal_index(stack *A, stack *B) 
+int get_index_B(stack *A, stack *B, int a)
+{
+    node *temp = A->head;
+    node *tempb = B->head;
+    int indexb = 0;
+
+    while(a > 0)
+    {
+        temp = temp->next;
+        a--;
+    }
+    while (temp > tempb)
+    {
+        tempb = tempb->next;
+        indexb++;
+    }
+    return indexb;
+}
+int get_index_A(stack *A, stack *B) 
 {
     node *temp = A->head;
     int best_index = -1;
@@ -103,16 +117,16 @@ int get_optimal_index(stack *A, stack *B)
     {
         return checkinferior;
     }
-
+    printf("WHATS MY INDEX FOR A %d\n", best_index);
     return best_index;
 }
 
-void align_stack_a(stack *A, int optimal_index) 
+void align_stack_a(stack *A, int indexA) 
 {
-    if (minimum(optimal_index, A->number - optimal_index) == 0) 
+    if (minimum(indexA, A->number - indexA) == 0) 
     {
         int i= 0;
-        while (i < optimal_index) 
+        while (i < indexA) 
         {
             rotate(A);
             i++;
@@ -121,7 +135,7 @@ void align_stack_a(stack *A, int optimal_index)
     else 
     {
         int i = 0;
-        while(i < (A->number - optimal_index)) 
+        while(i < (A->number - indexA)) 
         {
             reverserotate(A);
             i++;
@@ -153,20 +167,25 @@ void align_stack_b(stack *B, int indexB)
 
 void align_stacks(stack *A, stack *B) 
 {  
-    int optimal_index = get_optimal_index(A, B);
-    checkforboth(A, B, optimal_index);
-    align_stack_a(A, optimal_index);
-    
+    int indexA = get_index_A(A, B);
+    int indexB = get_index_B(A, B, indexA);
+    printf("OUTHERE BITCH A%d\n", indexA);
+    printf("OUTHERE BITCH B%d\n", indexB);
+    checkforboth(A, B, indexA, indexB);
+
+    indexA = 0;
     node *tempA = A->head;
     node *tempB = B->head;
-    int indexB = 0;
+    indexB = 0;
 
+    // Find the position in B where tempA->data should be inserted
     while (tempB != NULL && tempB->data > tempA->data) 
     {
         indexB++;
         tempB = tempB->next;
     }
 
+    align_stack_a(A, indexA);
     align_stack_b(B, indexB);
     pushb(A, B);
 
