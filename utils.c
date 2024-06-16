@@ -123,7 +123,7 @@ void rotate(stack *S)
         S->tail = temp;
         S->head->next = S->tail;
         S->tail->next = NULL;
-        printf("r%s\n", S->name);    
+        printf("r%s\n", S->name);   
         return;   
         
     }
@@ -200,7 +200,6 @@ void reverserotate(stack *S)
     S->tail = temp;
     temp->next = NULL; // second to last node points to NULL
     printf("rr%s\n", S->name);
-    
 }
 
 void reverseboth(stack *A, stack *B)
