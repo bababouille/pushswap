@@ -1,161 +1,168 @@
 #include "pushswap.h"
 #include <limits.h>
+// make function that checks wich best index in a stack has the lowest value to exchange with b
+// keep in mind the best value = index A + index B unless they rotate the same way
+// also we
+int check_for_rotations(stack *A, stack *B, int index_a, int index_b)
+{
+    int x = 0;
+    int y = 0;
 
-int minimum(int a, int b) {
-    return (a < b) ? 0 : 1;
+    if((index_a < A->number / 2) && (index_b < B->number / 2))
+    {
+        while(index_a > x && index_b > x)
+        {
+            x++;
+        }
+        return x;
+    }
+    else if((index_a > A->number / 2) && (index_b > B->number / 2))
+    {
+        while(index_a > x && index_b > x)
+        {
+            y++;
+        }
+        return y;
+    }
+    return 0;
+}
+void best_index_B(stack *B, int x)
+{
+    B->best_index = x;
 }
 
-int check(stack *A, stack *B)
+void rotate_both(stack *A, stack *B, int a)
 {
-  node *temp = A->head;
-    int best_index = -1;
-    int best_value = INT_MAX;
-    int index = 0;
-
-    while (temp != NULL) 
-    {
-        int moves_A = minimum(index, A->number - index) == 0 ? index : A->number - index;
-        int moves_B = 0;
-        node *temp2 = B->head;
-        
-        while (temp2 != NULL && temp->data > temp2->data) {
-            moves_B++;
-            temp2 = temp2->next;
+    int x = 0;
+    int b = B->best_index;
+    if(a < A->number / 2 && b < B->number / 2)
+    {   
+        while(a > x && b > x)
+        {
+            rotateboth(A, B);
+            x++;
         }
-        moves_B = minimum(moves_B, B->number - moves_B) == 0 ? moves_B : B->number - moves_B;
+        
+    }
+    else if (a > A->number / 2 && b > B->number / 2)
+    {
+        while(a > x && b > x)
+        {
+            reverseboth(A, B);
+            x++;
+        }
+    }
+}
 
-        int value = moves_A + moves_B;
-        if (value < best_value)
+int index_A_for_B_rotate(stack *A, stack *B)
+{
+    node *a = A->head;
+    node *b = B->head;
+    int index_a = 0;
+    int best_index_a = 0;
+    int index_b;
+    int best_index_b = 0;
+    int value = 0;
+    int best_value = INT_MAX;
+    int rotations = 0;
+    int number_B = B->number;
+    int half_number_B = number_B / 2;
+
+    while (a != NULL)
+    {
+        index_b = 0;
+        while(b != NULL && half_number_B <= number_B && a->data < b->data)
+        {
+            index_b++;
+            half_number_B++;
+            b = b->next;
+            
+        }
+        rotations = check_for_rotations(A, B, index_a, index_b); 
+        value = (index_a + index_b) - rotations;
+       
+        if(value < best_value)
         {
             best_value = value;
-            best_index = index;
+            best_index_a = index_a;
+            best_index_b = index_b;
         }
-        index++;
-        temp = temp->next;
+        a = a->next;
+        number_B++;
+        index_a++;
     }
-    return best_index;
+    best_index_B(B, best_index_b);
+    printf("WHAT IS INDEX A %d\n", best_index_a);
+    return best_index_a;
 }
-int get_optimal_index(stack *A, stack *B) 
+
+int index_A_for_B_reverse(stack *A, stack *B)
 {
-    node *temp = A->head;
-    int best_index = -1;
+    node *a = A->head;
+
+    int index_a = 0;
+    int best_index_a = 0;
+    int index_b = 0;
+    int best_index_b = 0;
+    int value = 0;
     int best_value = INT_MAX;
-    int index = 0;
-    int checkinferior = 0;
-
-    while (temp != NULL) 
+    int rotations = 0;
+    int number_b = B->number;
+    int half_number_b = number_b / 2;
+    
+    while (a != NULL)
     {
-        int moves_A = minimum(index, A->number - index) == 0 ? index : A->number - index;
-        int moves_B = 0;
-        node *temp2 = B->head;
-        
-        while (temp2 != NULL && temp->data < temp2->data) 
+        node *b = B->head;
+        index_b = 0;
+        while(b != NULL && index_b <= half_number_b)
         {
-            moves_B++;
-            temp2 = temp2->next;
+            b = b->next;
+            index_b++;
         }
-        moves_B = minimum(moves_B, B->number - moves_B) == 0 ? moves_B : B->number - moves_B;
+        index_b = number_b - index_b;     
+        while(b != NULL && a->data < b->data)
+        {
+            index_b--;
+            b = b->next;
+        }
+        rotations = check_for_rotations(A, B, index_a, index_b); 
+        value = (index_a + index_b) - rotations;
 
-        int value = moves_A + moves_B;
-        if (value < best_value)
+        if(value < best_value)
         {
             best_value = value;
-            best_index = index;
+            best_index_a = index_a;
+            best_index_b = index_b;
         }
-        index++;
-        temp = temp->next;
+        a = a->next;
+        index_a++;
     }
-    checkinferior = check(A, B);
-    if(checkinferior < best_index)
-    {
-        return checkinferior;
-    }
-    return best_index;
+    best_index_B(B, best_index_b);
+    printf("WHAT IS INDEX A %d\n", best_index_a);
+    return best_index_a;
 }
 
-void align_stack_a(stack *A, int optimal_index) 
+int index_for_A(stack *A, stack *B)
 {
-    if (minimum(optimal_index, A->number - optimal_index) == 0) 
+    int index_one = index_A_for_B_rotate(A, B);
+    int index_two = index_A_for_B_reverse(A, B);
+    if (index_one > index_two)
     {
-        int i= 0;
-        while (i < optimal_index) 
-        {
-            rotate(A);
-            i++;
-        }
-    } 
-    else 
-    {
-        int i = 0;
-        while(i < (A->number - optimal_index)) 
-        {
-            reverserotate(A);
-            i++;
-        }
+        return index_two;
     }
+    return index_one;
 }
-
-void align_stack_b(stack *B, int indexB) 
+void sort(stack *A, stack *B)
 {
-    if (minimum(indexB, B->number - indexB) == 0) 
-    {
-        int i = 0;
-        while ( i < indexB)
-        {
-            rotate(B);
-            i++;
-        }
-    } 
-    else 
-    {
-        int i = 0;
-        while (i < (B->number - indexB)) 
-        {
-            reverserotate(B); 
-            i++;
-        }
-    }
-}
-
-void align_stacks(stack *A, stack *B) 
-{  
-    int optimal_index = get_optimal_index(A, B);
-    align_stack_a(A, optimal_index);
+    int index_A = index_for_A(A, B);
+    printf("WHAT IS INDEX A %d\n", index_A);
+    rotate_both(A, B, index_A);
+    rotate_A();
+    rotate_B();
     
-    node *tempA = A->head;
-    node *tempB = B->head;
-    int indexB = 0;
-
-    while (tempB != NULL && tempB->data > tempA->data) 
-    {
-        indexB++;
-        tempB = tempB->next;
-    }
-    
-    align_stack_b(B, indexB);
     pushb(A, B);
 
-    if (B->head->data < B->tail->data) 
-    {
-        if (indexB <= B->number / 2) 
-        {
-            int i = 0;
-            while ( i < indexB) 
-            {
-                reverserotate(B);
-                i++;
-            }
-        } 
-        else 
-        {
-            int i = 0;
-            while (i < (B->number - indexB))
-            {
-                rotate(B);
-                i++;
-            }
-        }
-    }
+    // best_value();
 }
 
 int main(int argc, char **argv) 
@@ -170,6 +177,7 @@ int main(int argc, char **argv)
     B->head = NULL;
     B->tail = NULL;
     B->number = 0;
+    B->best_index = 0;
     strcpy(B->name, "b");
     
     int i = 1;
@@ -181,16 +189,15 @@ int main(int argc, char **argv)
 
     pushb(A, B);
     pushb(A, B);
-
-
+  
     if (B->head->data < B->head->next->data) 
     {
         swap(B);
     }
-
+    
     while (A->head) 
     {
-        align_stacks(A, B);
+        sort(A, B);
     }
     
     while (B->head) 

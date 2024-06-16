@@ -30,6 +30,7 @@ typedef struct
     struct node *tail;
     char name[128];
     int number;
+    int best_index;
 } stack;
 
 void    push(int data, stack *A);
