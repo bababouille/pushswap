@@ -26,11 +26,6 @@ int check_for_rotations(stack *A, stack *B, int index_a, int index_b)
     }
     return 0;
 }
-void best_index_B(stack *B, int x)
-{
-    B->best_index = x;
-}
-
 void rotate_both(stack *A, stack *B, int a)
 {
     int x = 0;
@@ -71,10 +66,9 @@ int index_A_for_B_rotate(stack *A, stack *B)
     while (a != NULL)
     {
         index_b = 0;
-        while(b != NULL && half_number_B <= number_B && a->data < b->data)
+        while(b != NULL && index_b < half_number_B && a->data < b->data)
         {
             index_b++;
-            half_number_B++;
             b = b->next;
             
         }
@@ -91,7 +85,7 @@ int index_A_for_B_rotate(stack *A, stack *B)
         number_B++;
         index_a++;
     }
-    best_index_B(B, best_index_b);
+    B->best_index = best_index_b;
     printf("WHAT IS INDEX A %d\n", best_index_a);
     return best_index_a;
 }
@@ -118,8 +112,7 @@ int index_A_for_B_reverse(stack *A, stack *B)
         {
             b = b->next;
             index_b++;
-        }
-        index_b = number_b - index_b;     
+        }   
         while(b != NULL && a->data < b->data)
         {
             index_b--;
@@ -137,7 +130,7 @@ int index_A_for_B_reverse(stack *A, stack *B)
         a = a->next;
         index_a++;
     }
-    best_index_B(B, best_index_b);
+    B->best_index = best_index_b;
     printf("WHAT IS INDEX A %d\n", best_index_a);
     return best_index_a;
 }
@@ -157,8 +150,8 @@ void sort(stack *A, stack *B)
     int index_A = index_for_A(A, B);
     printf("WHAT IS INDEX A %d\n", index_A);
     rotate_both(A, B, index_A);
-    rotate_A();
-    rotate_B();
+    // rotate_A();
+    // rotate_B();
     
     pushb(A, B);
 
