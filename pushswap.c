@@ -8,13 +8,10 @@ int minimum(int a, int b)
 
 void checkforboth(stack *A, stack *B, int a, int b)
 {
-    printf("INSIDE CHECK FOR BOTH\n");
-    printf("IN HERE BITCH A%d\n", a);
-    printf("IN HERE BITCH B%d\n", b);
+    
     a = minimum(a, A->number - a) == 0 ? a : A->number - a;
     b = minimum(b, B->number - b) == 0 ? b : B->number - b;
-    printf("IN HERE BITCH A%d\n", a);
-    printf("IN HERE BITCH B%d\n", b);
+   
     if((minimum(a, A->number - a) == 0) && (minimum(b, B->number - b) == 0))
     {
         int x = 0;
@@ -35,53 +32,73 @@ void checkforboth(stack *A, stack *B, int a, int b)
     }
 }
 
-int check(stack *A, stack *B)
-{
-  node *temp = A->head;
-    int best_index = -1;
-    int best_value = INT_MAX;
-    int index = 0;
+// int check(stack *A, stack *B)
+// {
+//   node *temp = A->head;
+//     int best_index = -1;
+//     int best_value = INT_MAX;
+//     int index = 0;
 
-    while (temp != NULL) 
-    {
-        int moves_A = minimum(index, A->number - index) == 0 ? index : A->number - index;
-        int moves_B = 0;
-        node *temp2 = B->head;
+//     while (temp != NULL) 
+//     {
+//         int moves_A = minimum(index, A->number - index) == 0 ? index : A->number - index;
+//         int moves_B = 0;
+//         node *temp2 = B->head;
         
-        while (temp2 != NULL && temp->data > temp2->data) {
-            moves_B++;
-            temp2 = temp2->next;
-        }
-        moves_B = minimum(moves_B, B->number - moves_B) == 0 ? moves_B : B->number - moves_B;
+//         while (temp2 != NULL && temp->data > temp2->data) {
+//             moves_B++;
+//             temp2 = temp2->next;
+//         }
+//         moves_B = minimum(moves_B, B->number - moves_B) == 0 ? moves_B : B->number - moves_B;
 
-        int value = moves_A + moves_B;
-        if (value < best_value)
-        {
-            best_value = value;
-            best_index = index;
-        }
-        index++;
-        temp = temp->next;
-    }
-    return best_index;
-}
+//         int value = moves_A + moves_B;
+//         if (value < best_value)
+//         {
+//             best_value = value;
+//             best_index = index;
+//         }
+//         index++;
+//         temp = temp->next;
+//     }
+//     return best_index;
+// }
 int get_index_B(stack *A, stack *B, int a)
 {
     node *temp = A->head;
     node *tempb = B->head;
+    // printf("+++++++++++++++++START START START++++++++++++++++++++\n\n\n\n\n\n");
+    // printf("A->HEAD->DATA IS %d B->HEAD->DATA IS %d\n", A->head->data, B->head->data);
     int indexb = 0;
-
+    // int indexa = a;
+    //a = index a
     while(a > 0)
     {
         temp = temp->next;
         a--;
     }
-    while (temp > tempb)
+
+    while (tempb != NULL && (temp->data < tempb->data))
     {
         tempb = tempb->next;
         indexb++;
+       
+    }
+    // printf("--------------A LIST--------------\n");
+    // printlist(A);
+    // printf("--------------B LIST--------------\n");
+    // printlist(B);
+    // printf("A->NUMBER = %d B->number = %d\n", A->number, B->number);
+    // printf("A INDEX IS %d B INDEX IS %d\n", indexa, indexb);
+    if(tempb)
+    {
+    // printf("TEMP A DATA IS %d TEMP B DATA IS %d\n", temp->data, tempb->data);
     }
     return indexb;
+    // printf("--------------A LIST--------------\n");
+    // printlist(A);
+    // printf("--------------B LIST--------------\n");
+    // printlist(B);
+    // printf("+++++++++++++++++END END END++++++++++++++++++++\n");
 }
 int get_index_A(stack *A, stack *B) 
 {
@@ -89,7 +106,7 @@ int get_index_A(stack *A, stack *B)
     int best_index = -1;
     int best_value = INT_MAX;
     int index = 0;
-    int checkinferior = 0;
+    // int checkinferior = 0;
 
     while (temp != NULL) 
     {
@@ -112,12 +129,12 @@ int get_index_A(stack *A, stack *B)
         index++;
         temp = temp->next;
     }
-    checkinferior = check(A, B);
-    if(checkinferior < best_index)
-    {
-        return checkinferior;
-    }
-    printf("WHATS MY INDEX FOR A %d\n", best_index);
+    // checkinferior = check(A, B);
+    // if(checkinferior < best_index)
+    // {
+    //     return checkinferior;
+    // }
+    // printf("WHATS MY INDEX FOR A %d\n", best_index);
     return best_index;
 }
 
@@ -169,24 +186,14 @@ void align_stacks(stack *A, stack *B)
 {  
     int indexA = get_index_A(A, B);
     int indexB = get_index_B(A, B, indexA);
-    printf("OUTHERE BITCH A%d\n", indexA);
-    printf("OUTHERE BITCH B%d\n", indexB);
+    // printf("OUTHERE BITCH A%d\n", indexA);
+    // printf("OUTHERE BITCH B%d\n", indexB);
+
     checkforboth(A, B, indexA, indexB);
-
-    indexA = 0;
-    node *tempA = A->head;
-    node *tempB = B->head;
-    indexB = 0;
-
-    // Find the position in B where tempA->data should be inserted
-    while (tempB != NULL && tempB->data > tempA->data) 
-    {
-        indexB++;
-        tempB = tempB->next;
-    }
 
     align_stack_a(A, indexA);
     align_stack_b(B, indexB);
+
     pushb(A, B);
 
     if (B->head->data < B->tail->data) 
