@@ -6,11 +6,12 @@ int minimum(int a, int b)
     return (a < b) ? 0 : 1;
 }
 
-void checkforboth(stack *A, stack *B, int a, int b)
+int checkforboth(stack *A, stack *B, int a, int b)
 {
     
     a = minimum(a, A->number - a) == 0 ? a : A->number - a;
     b = minimum(b, B->number - b) == 0 ? b : B->number - b;
+    int x;
    
     if((minimum(a, A->number - a) == 0) && (minimum(b, B->number - b) == 0))
     {
@@ -20,16 +21,19 @@ void checkforboth(stack *A, stack *B, int a, int b)
             rotateboth(A, B);
             x++;
         }
+        return x;
     }
      else if ((minimum(a, A->number - a) == 1) && (minimum(b, B->number - b) == 1))
     {
-        int x = 0;
+        x = 0;
         while(x < (A->number - a) && x < (B->number - b) ) 
         {
             reverseboth(A, B);
             x++;
         }
+        return x;
     }
+    return 0;
 }
 
 // int check(stack *A, stack *B)
@@ -100,6 +104,10 @@ int get_index_B(stack *A, stack *B, int a)
     // printlist(B);
     // printf("+++++++++++++++++END END END++++++++++++++++++++\n");
 }
+int check_MAX_B(stack *B)
+{
+
+}
 int get_index_A(stack *A, stack *B) 
 {
     node *temp = A->head;
@@ -114,7 +122,8 @@ int get_index_A(stack *A, stack *B)
         int moves_B = 0;
         node *temp2 = B->head;
         
-        while (temp2 != NULL && temp->data < temp2->data) {
+        while (temp2 != NULL && temp->data < temp2->data) 
+        {
             moves_B++;
             temp2 = temp2->next;
         }
@@ -186,22 +195,36 @@ void align_stacks(stack *A, stack *B)
 {  
     int indexA = get_index_A(A, B);
     int indexB = get_index_B(A, B, indexA);
+    int check = 0;
     // printf("OUTHERE BITCH A%d\n", indexA);
     // printf("OUTHERE BITCH B%d\n", indexB);
-
-    checkforboth(A, B, indexA, indexB);
+    check = checkforboth(A, B, indexA, indexB);
+    
+    indexA = indexA - check;
+    indexB = indexB - check;
 
     align_stack_a(A, indexA);
+    printf("B INDEX IS BEFORE ALLIGN %d\n", indexB);
+    printf("CHECK FOR B IS %d\n", check);
     align_stack_b(B, indexB);
 
     pushb(A, B);
 
+    printf("--------------A LIST--------------\n");
+    printlist(A);
+    printf("--------------B LIST--------------\n");
+    printlist(B);
+    printf("B->number = %d\n", B->number);
+    printf("B INDEX IS %d\n", indexB);
+    printf("CHECK FOR B AFTER IS %d\n", check);
+    // indexA = indexA + check;
+    // indexB = indexB + check;
     if (B->head->data < B->tail->data) 
     {
         if (indexB <= B->number / 2) 
         {
             int i = 0;
-            while ( i < indexB) 
+            while (i < indexB) 
             {
                 reverserotate(B);
                 i++;
@@ -233,11 +256,11 @@ int main(int argc, char **argv)
     B->number = 0;
     strcpy(B->name, "b");
     
-    int i = 1;
-    while (i < argc) 
+    int i = argc - 1;
+    while (i >= 1) 
     {
         push(atoi(argv[i]), A);
-        i++;
+        i--;
     }
 
     pushb(A, B);
