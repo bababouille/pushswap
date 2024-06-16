@@ -38,7 +38,6 @@ void checkforboth(stack *A, stack *B, int i)
     // Calculate the minimal rotation steps for A and B
     i = (minimum(i, A->number - i) == 0) ? i : A->number - i;
     indexB = (minimum(indexB, B->number - indexB) == 0) ? indexB : B->number - indexB;
-    printf("--------------HERE----------------------\n");
     // Rotate or reverse both stacks together as much as possible
     
     if ((minimum(i, A->number - i) == 0)) 
@@ -47,7 +46,7 @@ void checkforboth(stack *A, stack *B, int i)
         while (x < i && x < indexB) {
             rotateboth(A, B);
             x++; 
-            printf("@@@@@@@@@@@@@@@@@@@@@@HERE@@@@@@@@@@@@@@@@@@@@@\n");
+            
               
         }
     } 
@@ -59,7 +58,7 @@ void checkforboth(stack *A, stack *B, int i)
         {
             reverseboth(A, B);
             x++;
-           printf("+++++++++++++++++++HERE+++++++++++++++++++++++\n");
+           
         }
     }
 }
@@ -155,7 +154,6 @@ int get_optimal_index(stack *A, stack *B)
         index++;
         temp = temp->next;
     }
-    printf("THE BEST INDEX A CHOSEN WAS %d\n", best_index);
     // Compare with result from check function
     int check_inferior = check(A, B);
     if (check_inferior < best_index) 
@@ -176,14 +174,13 @@ void align_stack_a(stack *A, int optimal_index)
         while (i < optimal_index) {
             rotate(A);
             i++;
-            printf("&&&&&&&&&&&&&&&&&&&&&&&&HERE&&&&&&&&&&&&&&&&&&&&&&&\n");
         }
     } else {
         int i = 0;
         while (i < (A->number - optimal_index)) {
             reverserotate(A);
             i++;
-            printf("&&&&&&&&&&&&&&&&&&&&&&&&HERE&&&&&&&&&&&&&&&&&&&&&&&\n");
+
         }
     }
 }
